@@ -8,5 +8,5 @@ Currently only Tuya based WiFi RSH-AirBox01 is supported.
 First, you need `config.yml` configured based on `example_config.yml`
 
 ```bash
-./home-air-sensors-influx-relay config.yml
+python3 -m poetry run python3 ./home-air-sensors-influx-relay config.yml
 ```
