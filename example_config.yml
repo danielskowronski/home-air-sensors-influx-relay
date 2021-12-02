@@ -5,8 +5,12 @@ influx:
   user: test
   pass: test
   db: test
-  measurement: SmartAirBox_Study
 tuya:  # follow https://pypi.org/project/tinytuya/
-  ip: 192.168.0.2
-  id: aaaaaaaaaaaaaaaaaaaa
-  key: aaaaaaaaaaaaaaaa
+  - measurement: room001
+    ip: 192.168.0.2
+    id: aaaaaaaaaaaaaaaaaaaa
+    key: aaaaaaaaaaaaaaaa
+  - measurement: room002
+    ip: 192.168.0.3
+    id: bbbbbbbbbbbbbbbbbbbb
+    key: bbbbbbbbbbbbbbbb

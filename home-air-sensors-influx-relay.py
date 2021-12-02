@@ -8,7 +8,7 @@ from influxdb import InfluxDBClient
 _cfg = None
 
 
-def storeMeasurementsToInfluxDB(readings):
+def storeMeasurementsToInfluxDB(device, readings):
     try:
         client = InfluxDBClient(
             _cfg["influx"]["host"],
@@ -18,13 +18,13 @@ def storeMeasurementsToInfluxDB(readings):
             _cfg["influx"]["db"],
         )
         print(
-            "Sending data to InfluxDB: %s:%s"
-            % (_cfg["influx"]["host"], _cfg["influx"]["port"])
+            "Sending data to InfluxDB: %s:%s/%s"
+            % (_cfg["influx"]["host"], _cfg["influx"]["port"], device["measurement"])
         )
         status = client.write_points(
             [
                 {
-                    "measurement": _cfg["influx"]["measurement"],
+                    "measurement": device["measurement"],
                     "fields": {
                         "temperature_celsius": readings["temperature_celsius"],
                         "humidity_perc": readings["humidity_perc"],
@@ -40,9 +40,9 @@ def storeMeasurementsToInfluxDB(readings):
         print(e)
 
 
-def fetchLastMeasurement():
+def fetchLastMeasurement(device):
     d = tinytuya.OutletDevice(
-        _cfg["tuya"]["id"], _cfg["tuya"]["ip"], _cfg["tuya"]["key"]
+        device["id"], device["ip"], device["key"]
     )
     d.set_version(3.3)
     data = d.status()
@@ -69,4 +69,5 @@ if __name__ == "__main__":
     loadedFile = yaml.load(stream, Loader=yaml.SafeLoader)
     _cfg = loadedFile
 
-    storeMeasurementsToInfluxDB(fetchLastMeasurement())
+    for device in _cfg["tuya"]:
+        storeMeasurementsToInfluxDB(device, fetchLastMeasurement(device))
