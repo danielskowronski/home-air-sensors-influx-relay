@@ -41,9 +41,7 @@ def storeMeasurementsToInfluxDB(device, readings):
 
 
 def fetchLastMeasurement(device):
-    d = tinytuya.OutletDevice(
-        device["id"], device["ip"], device["key"]
-    )
+    d = tinytuya.OutletDevice(device["id"], device["ip"], device["key"])
     d.set_version(3.3)
     data = d.status()
 
